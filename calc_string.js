@@ -33,6 +33,12 @@ function add (numbers) {
     // Escape special regex characters in the delimiter.  Important for user-defined delimiters.
     delimiter = delimiter.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&');
   }
+  
+  //Negative number core...
+  const negatives = nums.filter((num) => num < 0);
+  if (negatives.length > 0) {
+    throw new Error(`negative numbers not allowed: ${negatives.join(",")}`);
+  }
 
   // Calculate the sum
   return nums.reduce((sum, num) => sum + num, 0);
@@ -50,6 +56,7 @@ function checkTestCase(actual, expected, testName) {
     console.error(`ACTUAL: ${actual}`);
   }
 }
+
 
 // Test case 1: Empty string...
 function testEmptyString() {
@@ -86,6 +93,16 @@ function testDifferentDelimiter() {
   checkTestCase(add("//;\n1;2"), 3, "Test Case 6: Different delimiter");
 }
 
+// Test case 7: Negative number
+function testNegativeNumber() {
+  checkTestCase(() => add("-1,2,3"), "negative numbers not allowed: -1", "Test Case 7: Negative number");
+}
+
+// Test case 8: Multiple negative numbers
+function testMultipleNegativeNumbers() {
+  checkTestCase(() => add("-1,-2,3,-4"), "negative numbers not allowed: -1,-2,-4", "Test Case 8: Multiple negative numbers");
+}
+
 // Run the tests....
 testEmptyString();
 testSingleNumber();
@@ -93,5 +110,7 @@ testTwoNumbers();
 testMultipleNumbers();
 testNewlineDelimiter();
 testDifferentDelimiter();
+testNegativeNumber();
+testMultipleNegativeNumbers();
 
 
